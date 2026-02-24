@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freedom | Digital Independence</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#050505',
+                        truth: '#E2E8F0',
+                        blood: '#E11D48',
+                        geekblue: '#8BB4F7',
+                        ink: '#1E293B'
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif SC"', '"Songti SC"', 'STSong', '"Times New Roman"', 'serif'],
+                        mono: ['"JetBrains Mono"', 'Consolas', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            background-color: #050505;
+            color: #E2E8F0;
+            overflow-x: hidden;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        #webgl-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .content-mask {
+            background: linear-gradient(to right, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.8) 50%, rgba(5,5,5,0.1) 100%);
+        }
+
+        @media (max-width: 768px) {
+            .content-mask {
+                background: linear-gradient(to bottom, rgba(5,5,5,0.8) 0%, rgba(5,5,5,0.95) 100%);
+            }
+        }
+
+        /* Redaction and Decryption Effects */
+        .redacted {
+            background-color: #E2E8F0;
+            color: #E2E8F0;
+            padding: 0 4px;
+            border-radius: 2px;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .redacted.revealed {
+            background-color: transparent;
+            color: #E11D48;
+            text-shadow: 0 0 10px rgba(225, 29, 72, 0.4);
+        }
+
+        .redacted::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(to right, transparent, rgba(0,0,0,0.2), transparent);
+            animation: sweep 3s infinite;
+            opacity: 1;
+            transition: opacity 0.5s;
+        }
+        .redacted.revealed::after {
+            opacity: 0;
+            animation: none;
+        }
+
+        @keyframes sweep {
+            0% { left: -100%; }
+            50% { left: 200%; }
+            100% { left: 200%; }
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+            will-change: opacity, visibility;
+        }
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: none;
+        }
+
+        .svg-mark {
+            filter: drop-shadow(0 0 8px rgba(226, 232, 240, 0.2));
+            transition: filter 1s ease;
+        }
+        .svg-mark:hover {
+            filter: drop-shadow(0 0 15px rgba(225, 29, 72, 0.6));
+        }
+        
+        #scroll-progress {
+            transform-origin: top;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blood selection:text-white">
+
+    <!-- Three.js Background -->
+    <div id="webgl-container"></div>
+
+    <!-- Scroll Progress -->
+    <div class="fixed left-0 top-0 w-1 h-full bg-void z-50">
+        <div id="scroll-progress" class="w-full bg-blood h-full scale-y-0 transition-transform duration-100 ease-out"></div>
+    </div>
+
+    <!-- Language Switcher -->
+    <button id="lang-toggle" class="fixed top-6 right-6 z-50 text-xs sm:text-sm font-mono text-gray-400 hover:text-white border border-gray-800 bg-void/60 backdrop-blur px-4 py-2 rounded transition-all shadow-lg hover:border-gray-500">
+        [ EN ] / ZH
+    </button>
+
+    <!-- Foreground Content -->
+    <div class="relative z-10 w-full min-h-screen flex content-mask">
+        <main class="w-full md:w-2/3 lg:w-1/2 px-8 sm:px-16 md:px-24 py-32">
+            
+            <!-- Prologue -->
+            <div class="mb-32">
+                <svg class="w-12 h-12 mb-8 text-truth svg-mark" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="50" cy="50" r="40" stroke-opacity="0.2"/>
+                    <circle cx="50" cy="50" r="30" stroke-opacity="0.4" stroke-dasharray="4 4"/>
+                    <path d="M50 15 L50 85 M15 50 L85 50" stroke-opacity="0.2"/>
+                    <polygon points="50,25 75,50 50,75 25,50" fill="currentColor" fill-opacity="0.1"/>
+                    <circle cx="50" cy="50" r="8" fill="currentColor"/>
+                </svg>
+
+                <div class="font-mono text-xs tracking-[0.3em] text-blood mb-4 uppercase" data-i18n="doc_label"></div>
+                <h1 class="text-5xl sm:text-6xl font-black tracking-widest leading-tight mb-8" data-i18n="title"></h1>
+                <p class="text-lg text-gray-400 font-mono italic" data-i18n="subtitle"></p>
+            </div>
+
+            <!-- Chapter I -->
+            <div class="fade-in-section mb-32 space-y-8">
+                <h2 class="text-3xl font-bold border-b border-gray-800 pb-4 inline-block pr-12" data-i18n="ch1_title"></h2>
+                <div class="text-xl leading-loose text-gray-300 space-y-6">
+                    <p data-i18n="ch1_p1"></p>
+                    <p data-i18n="ch1_p2"></p>
+                    <p data-i18n="ch1_p3"></p>
+                </div>
+            </div>
+
+            <!-- Chapter II -->
+            <div class="fade-in-section mb-32 space-y-8">
+                <h2 class="text-3xl font-bold border-b border-gray-800 pb-4 inline-block pr-12" data-i18n="ch2_title"></h2>
+                <div class="text-xl leading-loose text-gray-300 space-y-6">
+                    <p data-i18n="ch2_p1"></p>
+                    <p data-i18n="ch2_p2"></p>
+                    <p data-i18n="ch2_p3"></p>
+                </div>
+            </div>
+
+            <!-- Chapter III -->
+            <div class="fade-in-section mb-32 space-y-8">
+                <h2 class="text-3xl font-bold border-b border-gray-800 pb-4 inline-block pr-12" data-i18n="ch3_title"></h2>
+                <div class="text-xl leading-loose text-gray-300 space-y-6">
+                    <p data-i18n="ch3_p1"></p>
+                    <p data-i18n="ch3_p2"></p>
+                    <p class="text-2xl font-bold mt-12 text-truth" data-i18n="ch3_p3"></p>
+                </div>
+            </div>
+
+            <!-- Epilogue -->
+            <div class="fade-in-section pb-32">
+                <div class="font-mono text-sm text-gray-600 border-l-2 border-blood pl-6">
+                    <p data-i18n="epilogue_1"></p>
+                    <p class="mt-2 text-gray-500" data-i18n="epilogue_2"></p>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- I18n & Interaction Logic -->
+    <script>
+        // ==========================================
+        // 0. i18n Dictionary
+        // ==========================================
+        const translations = {
+            en: {
+                doc_label: "Document #001 // The Manifesto",
+                title: "DECLARATION OF<br>DIGITAL INDEPENDENCE",
+                subtitle: '"In the cage woven by algorithms, <span class="redacted">will</span> is our only key."',
+                ch1_title: "I. Staring into the Abyss",
+                ch1_p1: 'We naively thought the birth of the internet would level the walls of power. Instead, it constructed a more massive and invisible <span class="redacted">Panopticon</span>.',
+                ch1_p2: 'Here, everything is under surveillance. Every click, every pause, every string of deleted characters is devoured by the <span class="redacted">Monolith</span> lurking in silicon valleys and data centers. They deconstruct us into labels, quantify our desires into profits, and discipline our thoughts into appendages of algorithms.',
+                ch1_p3: 'In this transparent society, <span class="redacted">privacy is not meant to hide sins, but to defend our dignity and unpredictability as human beings.</span>',
+                ch2_title: "II. The End of the Illusion",
+                ch2_p1: 'They told us that surrendering data buys convenience; surrendering thought buys customized pleasure. This is a gentle enslavement.',
+                ch2_p2: 'True freedom is never just choosing between A and B provided by an algorithm, but having the right to <span class="redacted">overturn the chessboard and refuse to be defined.</span>',
+                ch2_p3: 'When all voices are filtered and all preferences guided, what we lose is not just the right to choose, but <span class="redacted">Free Will</span> itself.',
+                ch3_title: "III. Protocol and Awakening",
+                ch3_p1: 'Therefore, we declare here: The sovereignty of information belongs to the one who creates it. Our minds are not fuel for the evolution of machines.',
+                ch3_p2: 'We will reshape boundaries with encryption and break monopolies with decentralization. We will rewrite the underlying logic of protocols, letting light pierce the black box and returning power to the individual.',
+                ch3_p3: '<span class="redacted">Freedom is not the default state; it is a protocol that must be executed.</span>',
+                epilogue_1: "End of Transmission.",
+                epilogue_2: "Scroll down to witness the collapse of the black box, or click the redacted text to force decryption.",
+                lang_btn: "[ EN ] / ZH"
+            },
+            zh: {
+                doc_label: "Document #001 // The Manifesto",
+                title: "数字<br>独立宣言",
+                subtitle: '"在算法编织的牢笼中，<span class="redacted">意志</span>是我们唯一的密钥。"',
+                ch1_title: "I. 凝视深渊",
+                ch1_p1: '我们曾天真地以为，互联网的诞生将推平权力的壁垒。但事与愿违，它构建了一座更为庞大且无形的<span class="redacted">全景监狱 (Panopticon)</span>。',
+                ch1_p2: '在这里，一切皆被凝视。每一次点击、每一次停顿、每一串被删除的字符，都被那些蛰伏在硅谷和数据中心的<span class="redacted">巨石阵 (The Monolith)</span> 所吞噬。它们将我们拆解为标签，将欲望量化为利润，将思想规训为算法的附庸。',
+                ch1_p3: '在这个透明的社会里，<span class="redacted">隐私并非用来隐藏罪恶，而是为了捍卫作为人类的尊严与不可预测性。</span>',
+                ch2_title: "II. 幻觉的终结",
+                ch2_p1: '他们告诉我们，交出数据便能获得便利；交出思考便能获得定制的愉悦。这是一种温柔的奴役。',
+                ch2_p2: '真正的自由，绝不仅仅是在算法提供给你的 A 与 B 之间做出选择，而是拥有<span class="redacted">掀翻棋盘、拒绝被定义的权利。</span>',
+                ch2_p3: '当所有的声音都被过滤，当所有的偏好都被引导，我们丧失的不仅仅是选择权，更是<span class="redacted">自由意志 (Free Will)</span> 本身。',
+                ch3_title: "III. 协议与觉醒",
+                ch3_p1: '因此，我们在此宣告：信息的主权归属于创造它的人。我们的思想不是供给机器进化的燃料。',
+                ch3_p2: '我们要用加密重塑边界，用去中心化打破垄断。我们将重新书写协议的底层逻辑，让光线穿透黑盒，让权力回归个体。',
+                ch3_p3: '<span class="redacted">自由不是默认状态，它是一种必须被执行的协议。</span>',
+                epilogue_1: "End of Transmission.",
+                epilogue_2: "向下滑动以见证黑盒的瓦解，或点击黑色文本区强制解密。",
+                lang_btn: "EN / [ 中文 ]"
+            }
+        };
+
+        let currentLang = 'en'; // 默认语言
+        const langToggle = document.getElementById('lang-toggle');
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            document.documentElement.lang = lang === 'en' ? 'en' : 'zh-CN';
+            
+            // 替换所有带有 data-i18n 的文本
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            langToggle.innerHTML = translations[lang].lang_btn;
+
+            // 切换语言后，DOM 重新生成，需要重新触发一次 Scroll 以检测哪些词汇需要保持解密状态
+            window.dispatchEvent(new Event('scroll'));
+        }
+
+        langToggle.addEventListener('click', () => {
+            applyLanguage(currentLang === 'en' ? 'zh' : 'en');
+        });
+
+        // Initialize default language
+        applyLanguage('en');
+
+
+        // ==========================================
+        // 1. 深度交互：滚动侦测与解密逻辑
+        // ==========================================
+        const fadeSections = document.querySelectorAll('.fade-in-section');
+        const progressBar = document.getElementById('scroll-progress');
+        let scrollPercent = 0;
+
+        // 使用事件委托处理点击解密 (支持动态生成的 DOM)
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('redacted')) {
+                e.target.classList.add('revealed');
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            scrollPercent = scrollHeight > 0 ? (scrollTop / scrollHeight) : 0;
+            
+            progressBar.style.transform = `scaleY(${scrollPercent})`;
+            const windowHeight = window.innerHeight;
+
+            // A. 段落淡入
+            fadeSections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                if (sectionTop < windowHeight * 0.8) {
+                    section.classList.add('is-visible');
+                }
+            });
+
+            // B. 动态获取页面中所有的隐藏词汇进行视口侦测解密
+            const currentRedactedElements = document.querySelectorAll('.redacted');
+            currentRedactedElements.forEach((el) => {
+                const elTop = el.getBoundingClientRect().top;
+                if (elTop < windowHeight * 0.85 && !el.classList.contains('revealed')) {
+                    setTimeout(() => {
+                        el.classList.add('revealed');
+                    }, Math.random() * 300 + 100); 
+                }
+            });
+        });
+
+        // ==========================================
+        // 2. Three.js: 封锁线的瓦解与自由意志爆发
+        // ==========================================
+        const container = document.getElementById('webgl-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x020203);
+        scene.fog = new THREE.FogExp2(0x020203, 0.015);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 200);
+        camera.position.set(0, 0, 25);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        const sceneGroup = new THREE.Group();
+        sceneGroup.position.x = window.innerWidth > 768 ? 6 : 0;
+        scene.add(sceneGroup);
+
+        // --- The Blockade Cage ---
+        const boxCount = 1200;
+        const baseRadius = 4.5;
+        const boxGeometry = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+        const boxMaterial = new THREE.MeshPhysicalMaterial({
+            color: 0x0a0a0c,
+            metalness: 0.2,
+            roughness: 0.9,
+            clearcoat: 0.1
+        });
+        
+        const blockade = new THREE.InstancedMesh(boxGeometry, boxMaterial, boxCount);
+        sceneGroup.add(blockade);
+
+        const dummy = new THREE.Object3D();
+        const boxData = []; 
+        
+        for(let i = 0; i < boxCount; i++) {
+            const phi = Math.acos(1 - 2 * (i + 0.5) / boxCount);
+            const theta = Math.PI * (1 + Math.sqrt(5)) * (i + 0.5);
+            
+            const x = baseRadius * Math.sin(phi) * Math.cos(theta);
+            const y = baseRadius * Math.sin(phi) * Math.sin(theta);
+            const z = baseRadius * Math.cos(phi);
+            
+            const position = new THREE.Vector3(x, y, z);
+            const direction = position.clone().normalize(); 
+            const rotAxis = new THREE.Vector3(Math.random()-0.5, Math.random()-0.5, Math.random()-0.5).normalize();
+            const rotSpeed = Math.random() * 0.1 + 0.05;
+
+            boxData.push({ basePos: position, dir: direction, rotAxis, rotSpeed, angle: Math.random() * Math.PI });
+            
+            dummy.position.copy(position);
+            dummy.lookAt(0,0,0);
+            dummy.updateMatrix();
+            blockade.setMatrixAt(i, dummy.matrix);
+        }
+
+        // --- The Spark of Will ---
+        const coreGroup = new THREE.Group();
+        sceneGroup.add(coreGroup);
+
+        const innerCoreGeo = new THREE.IcosahedronGeometry(2.8, 2);
+        const innerCoreMat = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            emissive: 0x8BB4F7,
+            emissiveIntensity: 0.5,
+            wireframe: false
+        });
+        const innerCore = new THREE.Mesh(innerCoreGeo, innerCoreMat);
+        coreGroup.add(innerCore);
+
+        const outerCoreGeo = new THREE.IcosahedronGeometry(3.2, 1);
+        const outerCoreMat = new THREE.MeshBasicMaterial({
+            color: 0xE11D48,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.8
+        });
+        const outerCore = new THREE.Mesh(outerCoreGeo, outerCoreMat);
+        coreGroup.add(outerCore);
+
+        const coreLight = new THREE.PointLight(0x8BB4F7, 0, 20); 
+        coreGroup.add(coreLight);
+
+        // --- The Liberated Data Sparks ---
+        const sparkCount = 2000;
+        const sparkGeo = new THREE.BufferGeometry();
+        const sparkPos = new Float32Array(sparkCount * 3);
+        const sparkVel = [];
+        
+        for(let i=0; i<sparkCount; i++) {
+            sparkPos[i*3] = (Math.random()-0.5) * 2;
+            sparkPos[i*3+1] = (Math.random()-0.5) * 2;
+            sparkPos[i*3+2] = (Math.random()-0.5) * 2;
+            
+            sparkVel.push({
+                x: (Math.random()-0.5) * 0.2,
+                y: (Math.random()-0.5) * 0.2,
+                z: (Math.random()-0.5) * 0.2,
+                orbitSpeed: Math.random() * 0.05 + 0.01
+            });
+        }
+        sparkGeo.setAttribute('position', new THREE.BufferAttribute(sparkPos, 3));
+        const sparkMat = new THREE.PointsMaterial({
+            color: 0x8BB4F7, 
+            size: 0.15, 
+            transparent: true, 
+            opacity: 0, 
+            blending: THREE.AdditiveBlending
+        });
+        const sparks = new THREE.Points(sparkGeo, sparkMat);
+        sceneGroup.add(sparks);
+
+        // --- Environment ---
+        scene.add(new THREE.AmbientLight(0xffffff, 0.1));
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            sceneGroup.position.x = window.innerWidth > 768 ? 6 : 0;
+        });
+
+        let mouseX = 0; let mouseY = 0;
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        });
+
+        // --- Animation Loop ---
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const time = clock.getElapsedTime();
+
+            // Heartbeat
+            const beat = Math.sin(time * 10) * (0.05 + scrollPercent * 0.1) + 1.0;
+            innerCore.scale.set(beat, beat, beat);
+            outerCore.rotation.x = time * 0.5;
+            outerCore.rotation.y = time * 0.3;
+            
+            coreLight.intensity = THREE.MathUtils.lerp(0, 50, scrollPercent * scrollPercent);
+            innerCoreMat.emissiveIntensity = THREE.MathUtils.lerp(0.5, 3.0, scrollPercent);
+
+            // Shattering logic
+            let explodeFactor = Math.max(0, (scrollPercent - 0.15) * 1.5);
+            const isGlitching = (scrollPercent < 0.5 && Math.random() > 0.92);
+            const glitchOffset = isGlitching ? 0.3 : 0;
+
+            for(let i=0; i<boxCount; i++) {
+                const data = boxData[i];
+                const dist = Math.pow(explodeFactor, 2) * 20;
+                
+                const currentPos = data.basePos.clone()
+                    .add(data.dir.clone().multiplyScalar(dist))
+                    .add(data.dir.clone().multiplyScalar(glitchOffset * (Math.random()-0.5)));
+
+                dummy.position.copy(currentPos);
+                
+                data.angle += data.rotSpeed * (1 + explodeFactor * 5);
+                dummy.quaternion.setFromAxisAngle(data.rotAxis, data.angle);
+                
+                const scale = Math.max(0, 1.0 - explodeFactor * 1.2);
+                dummy.scale.set(scale, scale, scale);
+
+                dummy.updateMatrix();
+                blockade.setMatrixAt(i, dummy.matrix);
+            }
+            blockade.instanceMatrix.needsUpdate = true;
+            blockade.rotation.y = time * 0.05 + (isGlitching ? 0.02 : 0);
+            blockade.rotation.x = time * 0.02;
+
+            // Sparks logic
+            if (scrollPercent > 0.3) {
+                sparkMat.opacity = THREE.MathUtils.lerp(sparkMat.opacity, 0.8, 0.05);
+                const positions = sparks.geometry.attributes.position.array;
+                
+                for(let i=0; i<sparkCount; i++) {
+                    let ix = i * 3;
+                    let x = positions[ix];
+                    let y = positions[ix+1];
+                    let z = positions[ix+2];
+                    
+                    const v = sparkVel[i];
+                    
+                    x += v.x + (y * v.orbitSpeed);
+                    y += v.y + 0.02; 
+                    z += v.z - (x * v.orbitSpeed);
+
+                    if(x*x + y*y + z*z > 400) {
+                        x = (Math.random()-0.5) * 2;
+                        y = (Math.random()-0.5) * 2;
+                        z = (Math.random()-0.5) * 2;
+                    }
+
+                    positions[ix] = x;
+                    positions[ix+1] = y;
+                    positions[ix+2] = z;
+                }
+                sparks.geometry.attributes.position.needsUpdate = true;
+            } else {
+                sparkMat.opacity = 0;
+            }
+
+            // Parallax
+            sceneGroup.rotation.y += (mouseX * 0.3 - sceneGroup.rotation.y) * 0.05;
+            sceneGroup.rotation.x += (mouseY * 0.3 - sceneGroup.rotation.x) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
