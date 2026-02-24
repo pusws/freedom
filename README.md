@@ -1,140 +1,119 @@
-# Freedom: The Manifesto
+# Freedom: Free Speech Declaration
 
-[中文](#数字独立宣言)
+[中文](#freedom-言论自由宣言)
 
-An interactive conceptual web project that combines narrative interaction with WebGL 3D visuals.
-It is both a webpage and a metaphorical digital artwork about censorship, privacy, and free will in the information age.
+A refactored interactive manifesto webpage about free speech rights, platform transparency, and public knowledge sovereignty.
+The project blends long-form narrative, bilingual switching, and real-time WebGL visuals into one immersive reading experience.
 
-## 🌟 Core Concepts
+## Highlights
 
-### 1) Redaction & Decryption
+- **Bilingual live switch (EN / 中文):** One-click language toggle updates all narrative sections, metrics, and UI labels.
+- **Progress-driven storytelling:** Scroll activates section reveals, progress indicator, and staged visual transitions.
+- **Redaction-to-reveal interaction:** Key terms start as masked fragments and become visible through click and viewport-triggered decoding.
+- **Refactored visual language:** Dark glass panels, protocol cards, geometric sigil, and layered gradients for a consistent “digital manifesto” tone.
 
-The manifesto text uses a “classified archive” style.
-Important words (e.g. “Will”, “Panopticon”) are hidden under dark blocks at first, then gradually revealed while reading (scrolling) or clicking.
-This symbolizes breaking information blockades to recover truth.
+## 3D Scene (Three.js)
 
-### 2) Shattering the Blockade
+The background scene is synchronized with reading progress:
 
-The 3D scene on the right is the project’s centerpiece:
+- **Blockade shell:** `1600` instanced cubes distributed with a Fibonacci-sphere pattern.
+- **Will core:** Emissive icosahedron + wireframe torus knot + 3 orbital rings.
+- **Break phase:** Scroll progress drives shell expansion, rotation, and shrink-to-collapse behavior.
+- **Data sparks:** `2800` additive particles emerge after threshold progress and form upward swirling motion.
+- **Parallax control:** Mouse movement subtly offsets group rotation for depth.
 
-- **The Blockade**: A closed sphere made of 1,200 black cubes, representing algorithmic censorship, platform monopoly, and information cocoons.
-- **The Spark of Will**: A glowing core trapped inside, symbolizing uncompromising free will.
-- **The Breakthrough**: As reading progresses, the core intensifies until the outer cubes are blasted apart.
-- **Liberated Data**: After collapse, blue particles burst out and spiral upward, symbolizing data liberation and sovereignty.
+## Tech Stack
 
-### 3) Geometric Badge
+No build step required (single-file app):
 
-Instead of concrete icons, the header uses pure geometric SVG elements (circles, dashed lines, intersections, polygons) with subtle breathing glow for a solemn, sci‑fi ritual tone.
+- **HTML5** structure and semantic content
+- **Tailwind CSS (CDN)** for utility styling and responsive layout
+- **Vanilla JavaScript** for i18n state, scroll logic, reveal behavior, and animation control
+- **Three.js r128** for GPU rendering (`InstancedMesh`, custom particle updates, physically styled materials)
 
-## 🛠️ Tech Stack
+## Quick Start
 
-Single-file architecture, no build step required:
+1. Clone this repository.
+2. Run either method below:
 
-- **HTML5**: Semantic structure and content.
-- **Tailwind CSS (CDN)**: Typography, dark UI, and animation.
-- **Vanilla JavaScript**: Scroll interaction, decryption state updates, parallax, interpolation.
-- **Three.js (r128)**:
-  - `InstancedMesh` for efficient rendering of 1,200 cubes.
-  - Fibonacci sphere distribution for initial placement.
-  - `MeshPhysicalMaterial` for metallic feel.
-  - Physics-inspired trajectories and particle spiral motion.
+- **Direct open:** open `index.html` in a modern browser.
+- **Local server (recommended):**
+  - `python -m http.server 8000`
+  - visit `http://localhost:8000`
 
-## 🚀 Quick Start
+## Interaction Guide
 
-1. Clone or download this repository.
-2. Run in one of the following ways:
+- **Scroll:** drives reading progress, content reveal, and 3D phase changes.
+- **Click masked terms:** reveal redacted keywords.
+- **Move mouse:** observe subtle 3D parallax.
+- **Switch language:** use the top-right `EN / 中文` toggle.
 
-- **Direct open**: Double-click `index.html` in a modern browser.
-- **Recommended (local server)**:
-  - Python 3: `python -m http.server 8000`
-  - Visit: `http://localhost:8000`
-  - Or use VS Code Live Server.
+## Project Structure
 
-## 💡 Interaction Guide
+- `index.html` — UI, styles, i18n content, interactions, and Three.js scene logic
+- `README.md` — project overview and usage
+- `LICENSE` — MIT license text
 
-- **Read + Scroll**: Drives the narrative and 3D state transition.
-- **Click to Decrypt**: Click masked words to reveal hidden terms.
-- **Move Mouse**: Observe subtle 3D parallax.
+## License
 
-## 📁 Project Structure
-
-- `index.html`: All layout, styles, interaction logic, and 3D rendering.
-- `README.md`: Project introduction and usage.
-- `LICENSE`: License file.
-
-## 🤝 Contribution
-
-This project is intended as both an art concept and a technical demo.
-Feel free to fork, remix, and share.
-
-> “Freedom is not a default state; it is a protocol that must be executed.”
+MIT
 
 ---
 
-# 数字独立宣言
+# Freedom: 言论自由宣言
 
-一个结合交互叙事与 WebGL 3D 渲染的概念网页项目。
-它不仅是网页，也是一件关于审查、隐私与自由意志的数字隐喻作品。
+一个重构后的交互式宣言网页项目，聚焦言论自由权利、平台透明度与公共知识主权。
+项目将长文叙事、双语切换与 WebGL 实时视觉融合为一体化阅读体验。
 
-## 🌟 核心理念
+## 亮点
 
-### 1）信息遮蔽与解密
+- **双语即时切换（EN / 中文）：** 右上角一键切换，整页文案与界面标签同步更新。
+- **滚动驱动叙事：** 随阅读进度触发内容显现、进度条变化与视觉阶段演进。
+- **遮蔽词解密交互：** 关键词默认遮蔽，可点击解密，也会在视口触发下逐步显现。
+- **重构后的视觉体系：** 深色玻璃面板、协议卡片、几何徽记与分层渐变统一整体风格。
 
-宣言文本采用“机密档案”风格。
-关键词（如“意志”“全景监狱”）初始被深色块遮蔽；随着滚动阅读或点击，会逐步显现。
-这象征着打破信息封锁、获取真相的过程。
+## 3D 场景（Three.js）
 
-### 2）数字封锁线的瓦解
+背景 3D 场景与阅读进度实时联动：
 
-右侧 3D 场景是项目核心：
+- **封锁外壳：** `1600` 个实例化立方体，使用斐波那契球面分布。
+- **意志核心：** 发光二十面体 + 线框环结 + 3 层轨道环。
+- **突破阶段：** 滚动进度驱动外壳扩散、旋转与塌缩。
+- **数据火花：** `2800` 个加色粒子在阈值后喷发并形成上升旋流。
+- **视差控制：** 鼠标移动微调整体旋转，增强空间层次。
 
-- **封锁牢笼**：由 1200 个黑色方块组成的闭合球体，隐喻算法审查、平台垄断与信息茧房。
-- **意志之核**：被困于内部的发光核心，象征不妥协的自由意志。
-- **觉醒突破**：随着阅读推进，核心能量增强，最终冲破封锁并击碎方块。
-- **自由数据流**：牢笼崩解后，蓝色粒子喷涌上升，隐喻数据解放与主权重构。
+## 技术栈
 
-### 3）几何徽章
+无需构建流程（单文件应用）：
 
-页首放弃具象图标，改用纯几何 SVG（圆、虚线、相交线、多边形）与微弱呼吸光效，营造庄严、科幻的仪式感。
+- **HTML5**：页面结构与语义内容
+- **Tailwind CSS（CDN）**：实用类样式与响应式布局
+- **Vanilla JavaScript**：i18n 状态、滚动逻辑、解密交互与动画控制
+- **Three.js r128**：GPU 渲染（`InstancedMesh`、粒子更新、材质效果）
 
-## 🛠️ 技术栈
+## 快速开始
 
-单文件结构，即开即用，无需构建流程：
-
-- **HTML5**：语义化结构与文档内容。
-- **Tailwind CSS（CDN）**：排版、深色 UI、动画效果。
-- **Vanilla JavaScript**：滚动交互、解密状态切换、视差与插值计算。
-- **Three.js（r128）**：
-  - 使用 `InstancedMesh` 高效渲染 1200 个方块。
-  - 使用斐波那契球面算法进行均匀分布。
-  - 使用 `MeshPhysicalMaterial` 模拟金属质感。
-  - 基于物理直觉计算爆炸轨迹与粒子螺旋上升。
-
-## 🚀 快速开始
-
-1. 克隆或下载仓库。
+1. 克隆仓库。
 2. 任选以下方式运行：
 
-- **直接打开**：在现代浏览器中双击 `index.html`。
-- **推荐（本地服务）**：
-  - Python 3：`python -m http.server 8000`
-  - 访问：`http://localhost:8000`
-  - 或使用 VS Code Live Server 插件。
+- **直接打开：** 在现代浏览器中打开 `index.html`。
+- **推荐本地服务：**
+  - `python -m http.server 8000`
+  - 访问 `http://localhost:8000`
 
-## 💡 交互说明
+## 交互说明
 
-- **阅读 + 滚动**：驱动叙事推进与 3D 状态变化。
-- **点击解密**：点击遮蔽词条，主动揭示关键词。
-- **鼠标移动**：观察细微 3D 视差，增强沉浸感。
+- **滚动：** 推进叙事、触发内容显现与 3D 阶段变化。
+- **点击遮蔽词：** 解密关键词。
+- **移动鼠标：** 观察细微 3D 视差。
+- **语言切换：** 使用右上角 `EN / 中文` 按钮。
 
-## 📁 项目结构
+## 项目结构
 
-- `index.html`：页面结构、样式、交互逻辑与 3D 渲染。
-- `README.md`：项目说明与使用指南。
-- `LICENSE`：许可证文件。
+- `index.html`：界面、样式、双语文案、交互逻辑与 Three.js 场景
+- `README.md`：项目说明与使用指南
+- `LICENSE`：MIT 许可证
 
-## 🤝 贡献
+## 许可证
 
-本项目同时是艺术表达与技术演示，欢迎复刻、改造与分享。
-
-> “自由不是默认状态，它是一种必须被执行的协议。”
+MIT
